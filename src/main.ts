@@ -64,7 +64,7 @@ const crawler = new CheerioCrawler({
     maxRequestsPerMinute: 200,
     requestHandlerTimeoutSecs: 60,
     proxyConfiguration,
-    maxConcurrency: 5,
+    maxConcurrency: 20,
     maxRequestRetries: 6,
     requestHandler: router,
 });
