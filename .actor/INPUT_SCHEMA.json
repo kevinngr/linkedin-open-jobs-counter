@@ -1,0 +1,91 @@
+{
+    "title": "CheerioCrawler Template",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "maxConcurrency": {
+            "title": "Max concurrency",
+            "type": "integer",
+            "description": "The maximum number of pages that are opened at the same time.",
+            "default": 10,
+            "editor": "number"
+        },
+        "companyIds": {
+            "title": "Company IDs",
+            "type": "array",
+            "description": "Actor will only process job listings from the companies with the specified IDs. Add the company IDs to this list and separate the IDs with a comma.",
+            "prefill": [],
+            "editor": "stringList"
+        },
+        "query": {
+            "title": "Query",
+            "type": "string",
+            "description": "The search query. For example, \"Business Department Representative\" or you cand write an advanced query like this (Business Development Representative OR BDR).",
+            "editor": "textfield"
+        },
+        "location": {
+            "title": "Location",
+            "type": "string",
+            "description": "The location to search in.",
+            "editor": "textfield"
+        },
+        "geoId": {
+            "title": "Geo ID",
+            "type": "integer",
+            "description": "An alternative to the location parameter, this parameter accepts a LinkedIn geo ID. You can find the geo ID by searching for a location on LinkedIn and copying the number in the URL. For example, the geo ID for New York is 103644278.",
+            "editor": "number"
+        },
+        "experience": {
+            "title": "Experience",
+            "type": "array",
+            "description": "The experience level of the job listing. Internship = 1, Entry Level = 2, Associate = 3, Mid Senior = 4, Director = 5, Executive = 6",
+            "prefill": [],
+            "editor": "stringList"
+        },
+        "jobFunctions": {
+            "title": "Job functions",
+            "type": "array",
+            "description": "The job functions of the job listing. The job function codes can be found here: https://learn.microsoft.com/en-us/linkedin/shared/references/reference-tables/job-function-codes",
+            "prefill": [],
+            "editor": "stringList"
+        },
+        "industries": {
+            "title": "Industries",
+            "type": "array",
+            "description": "The industries of the job listing. The industry codes can be found here: https://learn.microsoft.com/en-us/linkedin/shared/references/reference-tables/industry-codes-v2",
+            "prefill": [],
+            "editor": "stringList"
+        },
+        "onSiteOrRemote": {
+            "title": "On-site or remote",
+            "type": "array",
+            "description": "The on-site or remote of the job listing. On Site = 1, Remote = 2, Hybrid = 3",
+            "prefill": [],
+            "editor": "stringList"
+        },
+        "jobType": {
+            "title": "Job type",
+            "type": "array",
+            "description": "The job type of the job listing. Full-time = F, Part-time = P, Temporary = T, Contract = C, Internship = I, Volunteer = V, Other = O",
+            "prefill": [],
+            "editor": "stringList"
+        },
+        "relevance": {
+            "title": "Relevance",
+            "type": "string",
+            "description": "The relevance of the job listing. Recent = DD, Relevant = R",
+            "default": "",
+            "editor": "textfield"
+        },
+        "time": {
+            "title": "Time filter",
+            "type": "string",
+            "description": "The time filter of the job listing. Day = r86400, Week = r604800, Month = r2592000",
+            "default": "",
+            "editor": "textfield"
+        }
+    },
+    "required": [
+        "companyIds"
+    ]
+}

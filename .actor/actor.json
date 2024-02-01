@@ -1,0 +1,14 @@
+{
+    "actorSpecification": 1,
+    "name": "linkedin-open-jobs-counter",
+    "title": "🥇 Linkedin Open Jobs Counter",
+    "description": "This actor is created to assist you in locating and pulling out job postings from LinkedIn. It covers all important details of the job postings. To search for jobs posted by a specific company, just input their company IDs.",
+    "version": "0.2",
+    "buildTag": "latest",
+    "environmentVariables": {
+        "DATA_CENTER_PROXY_URL": "@apifyLinkedinJobsDatacenter"
+    },
+    "input": "./INPUT_SCHEMA.json",
+    "dockerfile": "./Dockerfile",
+    "readme": "./README.md"
+}
