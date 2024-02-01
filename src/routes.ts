@@ -22,6 +22,7 @@ router.addHandler<IUserDataSet>(Labels.START, async ({ request, $, log }) => {
 
     const payload = {
         companyId,
+        loadedUrl,
         numberOfJobs: Number.isNaN(numberOfJobs) ? 0 : numberOfJobs,
     };
 
