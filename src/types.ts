@@ -21,6 +21,7 @@ export interface InputSchema {
 
 export interface IUserDataSet extends IJobDataSet {
     companyId?: string;
+    workLocationType?: string;
 }
 
 export interface IJobDataSet {

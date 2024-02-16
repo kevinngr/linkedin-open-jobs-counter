@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Actor } from 'apify';
-import { CheerioCrawler } from 'crawlee';
+import { CheerioCrawler, RequestOptions } from 'crawlee';
 import { MAX_RESULTS } from './constants.js';
 import { Labels } from './labels.js';
 import { buildFilters } from './query.js';
 import { router } from './routes.js';
 import { InputSchema } from './types.js';
 import { ILinkedinJobsUserInput, buildSearchUrl } from './utils/buildSearchUrl.js';
+import { getWorkLocationType } from './utils/getWorkLocationType.js';
 
 // Check for required environment variables
 // if (!process.env.DATA_CENTER_PROXY_URL) {
@@ -50,18 +51,39 @@ const search: ILinkedinJobsUserInput = {
 };
 
 // Generate start URLs based on company IDs
-const startUrls = companyIds.map((companyId) => ({
-    label: Labels.START,
-    url: buildSearchUrl({ ...search, companyIds: [companyId] }),
-    userData: {
-        companyId,
-        ...input,
-    } || {},
-}));
+const onSiteOrRemoveOptions = search.options.filters?.onSiteOrRemote || [];
+let startUrls: RequestOptions[] = [];
+
+if (onSiteOrRemoveOptions.length > 1) {
+    // check each onSiteOrRemote option for each company
+    startUrls = companyIds.flatMap((companyId) => onSiteOrRemoveOptions.map((workLocationType) => ({
+        label: Labels.START,
+        url: buildSearchUrl({
+            ...search,
+            companyIds: [companyId],
+            options: { ...search.options, filters: { ...search.options.filters, onSiteOrRemote: [workLocationType] } },
+        }),
+        userData: {
+            ...input,
+            companyId,
+            workLocationType: getWorkLocationType(workLocationType),
+        } || {},
+    })));
+} else {
+    startUrls = companyIds.map((companyId) => ({
+        label: Labels.START,
+        url: buildSearchUrl({ ...search, companyIds: [companyId] }),
+        userData: {
+            ...input,
+            companyId,
+            workLocationType: getWorkLocationType(onSiteOrRemoveOptions[0]),
+        } || {},
+    }));
+}
 
 // Set up crawler
 const crawler = new CheerioCrawler({
-    maxRequestsPerMinute: 200,
+    maxRequestsPerMinute: 100,
     requestHandlerTimeoutSecs: 60,
     proxyConfiguration,
     maxConcurrency: 20,
