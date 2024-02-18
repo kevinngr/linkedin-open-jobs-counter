@@ -14,6 +14,20 @@ import { getWorkLocationType } from './utils/getWorkLocationType.js';
 //     throw new Error('DATA_CENTER_PROXY_URL environment variable is missing!');
 // }
 
+const createStartUrl = (companyId?: string, workLocationType?: string) => ({
+    label: Labels.START,
+    url: buildSearchUrl({
+        ...search,
+        companyIds: companyId ? [companyId] : undefined,
+        options: { ...search.options, filters: { ...search.options.filters, onSiteOrRemote: workLocationType ? [workLocationType] : undefined } },
+    }),
+    userData: {
+        ...input,
+        ...(companyId && { companyId }),
+        ...(workLocationType && { workLocationType: getWorkLocationType(workLocationType) }),
+    },
+});
+
 // Initialize the Apify SDK
 await Actor.init();
 
@@ -52,34 +66,10 @@ const search: ILinkedinJobsUserInput = {
 
 // Generate start URLs based on company IDs
 const onSiteOrRemoveOptions = search.options.filters?.onSiteOrRemote || [];
-let startUrls: RequestOptions[] = [];
-
-if (onSiteOrRemoveOptions.length > 1) {
-    // check each onSiteOrRemote option for each company
-    startUrls = companyIds.flatMap((companyId) => onSiteOrRemoveOptions.map((workLocationType) => ({
-        label: Labels.START,
-        url: buildSearchUrl({
-            ...search,
-            companyIds: [companyId],
-            options: { ...search.options, filters: { ...search.options.filters, onSiteOrRemote: [workLocationType] } },
-        }),
-        userData: {
-            ...input,
-            companyId,
-            workLocationType: getWorkLocationType(workLocationType),
-        } || {},
-    })));
-} else {
-    startUrls = companyIds.map((companyId) => ({
-        label: Labels.START,
-        url: buildSearchUrl({ ...search, companyIds: [companyId] }),
-        userData: {
-            ...input,
-            companyId,
-            workLocationType: getWorkLocationType(onSiteOrRemoveOptions[0]),
-        } || {},
-    }));
-}
+const startUrls: RequestOptions[] = companyIds.flatMap((companyId) => (onSiteOrRemoveOptions.length > 0
+    ? onSiteOrRemoveOptions.map((workLocationType) => createStartUrl(companyId, workLocationType))
+    : [createStartUrl(companyId)]),
+);
 
 // Set up crawler
 const crawler = new CheerioCrawler({
