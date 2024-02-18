@@ -16,6 +16,7 @@ export interface IFilters {
     industries?: string[];
     jobFunctions?: string[];
     relevance?: string;
+    distance?: string;
     time?: string;
     type?: string[];
     experience?: string[];
@@ -33,6 +34,10 @@ export const buildFilters = (input: InputSchema): IFilters => {
 
     if (input.location) {
         result.location = input.location;
+    }
+
+    if (input.distance) {
+        result.distance = input.distance;
     }
 
     if (input.includeTitles && input.includeTitles.length > 0) {

@@ -33,6 +33,7 @@ export const buildSearchUrl = (props: ILinkedinJobsUserInput): string => {
         ['location', locationValue],
         ['geoId', geoId],
         ['f_C', companyIds?.length ? companyIds.join(',') : null],
+        ['distance', options?.filters?.distance],
         ['sortBy', options?.filters?.relevance],
         ['f_TPR', options?.filters?.time],
         ['f_JT', options?.filters?.type],

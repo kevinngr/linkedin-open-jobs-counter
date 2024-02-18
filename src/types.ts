@@ -4,6 +4,7 @@ export interface InputSchema {
     limit?: number;
     companyIds?: string[];
     location?: string;
+    distance?: string;
     geoId?: string;
     includeTitles?: string[];
     excludeTitles?: string[];
