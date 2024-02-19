@@ -34,7 +34,7 @@ await Actor.init();
 // Set up proxy configuration
 const proxyConfiguration = await Actor.createProxyConfiguration({
     useApifyProxy: true,
-    groups: ['RESIDENTIAL'],
+    groups: ['BUYPROXIES94952'],
 });
 
 // Get input data
